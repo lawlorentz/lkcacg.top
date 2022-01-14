@@ -5,7 +5,7 @@
 }
 document.addEventListener("DOMContentLoaded", initScrollReveal);
 document.addEventListener("pjax:success", initScrollReveal);
-</script><link rel="icon" type="image/png" href="/favicon.ico"><link rel="mask-icon" href="/favicon.ico" color="#6200ee"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><script id="yun-config">
+</script><link id="light-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@latest/themes/prism.css" media="(prefers-color-scheme: light)"><link id="dark-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@latest/themes/prism-tomorrow.css" media="(prefers-color-scheme: dark)"><link rel="icon" type="image/png" href="/favicon.ico"><link rel="mask-icon" href="/favicon.ico" color="#6200ee"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><script id="yun-config">
     const Yun = window.Yun || {};
     window.CONFIG = {"hostname":"lkcacg.top","root":"/","title":["Carson","の","小","破","站"],"version":"1.7.0","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms"},"anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://v1.hitokoto.cn","hitokoto":true},"fireworks":{"colors":["102, 167, 221","62, 131, 225","33, 78, 194"]}};
   </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/utils.js"></script><script src="/js/hexo-theme-yun.js"></script><meta name="description" content="鸭鸭的午后小憩 购买域名 去腾讯云购买了一个域名并实名注册（去GoDaddy之类的外网买应该更好？）lkcacg.topCloudflare注册 参考了30 分钟创建域名并关联 Github Pages 在Cloudflare上申请了SSL，参考Cloudflare免费ssl证书设置   顺便学习一下Git和Markdown的使用，补充一下计算机教育中缺失的一课  Git的使用initgit in">
@@ -30,77 +30,119 @@ document.addEventListener("pjax:success", initScrollReveal);
 <hr>
 <p>顺便学习一下Git和Markdown的使用，补充一下<a target="_blank" rel="noopener" href="https://missing.csail.mit.edu/2020/">计算机教育中缺失的一课</a></p>
 <hr>
-<h1 id="Git的使用"><a href="#Git的使用" class="headerlink" title="Git的使用"></a>Git的使用</h1><h2 id="init"><a href="#init" class="headerlink" title="init"></a>init</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git init &lt;directory&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="Git的使用"><a href="#Git的使用" class="headerlink" title="Git的使用"></a>Git的使用</h1><h2 id="init"><a href="#init" class="headerlink" title="init"></a>init</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">git init &lt;directory&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>将指定目录作为Git仓库，如果为空则为Git Bash的当前目录</p>
-<h2 id="add-amp-commit"><a href="#add-amp-commit" class="headerlink" title="add&amp;commit"></a>add&amp;commit</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git add *.c  </span><br><span class="line">git add README</span><br><span class="line">git commit -m &#x27;提交说明&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="add-amp-commit"><a href="#add-amp-commit" class="headerlink" title="add&amp;commit"></a>add&amp;commit</h2><pre class="line-numbers language-none"><code class="language-none">git add *.c  
+git add README
+git commit -m &#39;提交说明&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>以上命令将目录下以 .c 结所有文件及 README 文件提交到仓库中。</p>
 <h3 id="add"><a href="#add" class="headerlink" title="add"></a>add</h3><p>添加一个或多个文件到暂存区：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git add [file1] [file2] </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git add [file1] [file2] <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>添加指定目录到暂存区，包括子目录：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git add [dir]</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git add [dir]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>添加当前目录下的所有文件到暂存区：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git add .</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git add .<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>git add . ：他会监控工作区的状态树，使用它会把工作时的所有变化提交到暂存区，包括文件内容修改(modified)以及新文件(new)，但不包括被删除的文件。</p>
 <p>git add -u ：他仅监控已经被add的文件（即tracked file），他会将被修改的文件提交到暂存区。add -u 不会提交新文件（untracked file）。（git add –update的缩写）</p>
 <p>git add -A ：是上面两个功能的合集（git add –all的缩写）</p>
 <p><strong>一般就用<code>git add -A</code></strong></p>
 <h3 id="commit"><a href="#commit" class="headerlink" title="commit"></a>commit</h3><p>一般使用 -m 参数</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git commit [file1] [file2] ... -m [message]</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git commit [file1] [file2] ... -m [message]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>-a 参数设置修改文件后不需要执行 git add 命令，直接来提交</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git commit -a</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git commit -a<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h2 id="clone"><a href="#clone" class="headerlink" title="clone"></a>clone</h2><p>使用 git clone 从现有 Git 仓库中拷贝项目</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone &lt;repo&gt; &lt;directory&gt;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git clone &lt;repo&gt; &lt;directory&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>参数说明：</p>
 <ul>
 <li>repo: Git仓库，格式为<code>git@github.com:github用户名/项目名.git</code></li>
-<li>directory: 本地目录。<h2 id="reset"><a href="#reset" class="headerlink" title="reset"></a>reset</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git reset [--soft | --mixed | --hard] [HEAD]</span><br></pre></td></tr></table></figure>
+<li>directory: 本地目录。<h2 id="reset"><a href="#reset" class="headerlink" title="reset"></a>reset</h2><pre class="line-numbers language-none"><code class="language-none">git reset [--soft | --mixed | --hard] [HEAD]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 一般用 soft，谨慎使用 hard 参数，它会删除回退点之前的所有信息。</li>
 </ul>
 <p>例子：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git reset HEAD^^            # 回退所有内容到上上个版本  </span><br><span class="line">git reset HEAD~3 hello.php  # 回退 hello.php 文件的版本到上上上一个版本  </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git reset HEAD^^            # 回退所有内容到上上个版本  
+git reset HEAD~3 hello.php  # 回退 hello.php 文件的版本到上上上一个版本  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h2 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h2><p>创建分支命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git branch (branchname)</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git branch (branchname)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>切换分支命令:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git checkout (branchname)</span><br><span class="line"># 切换分支的时候，Git 会用该分支的最后提交的快照替换你的工作目录的内容， 所以多个分支不需要多个目录。</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git checkout (branchname)
+# 切换分支的时候，Git 会用该分支的最后提交的快照替换你的工作目录的内容， 所以多个分支不需要多个目录。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>列出分支基本命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git branch<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>删除分支命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git branch -d (branchname)</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git branch -d (branchname)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>分支合并命令</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git merge</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git merge<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h2 id="Git-amp-Github"><a href="#Git-amp-Github" class="headerlink" title="Git&amp;Github"></a>Git&amp;Github</h2><h3 id="remote"><a href="#remote" class="headerlink" title="remote"></a>remote</h3><p>显示所有远程仓库：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git remote -v</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git remote -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>显示某个远程仓库的信息：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git remote show [remote]</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git remote show [remote]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>添加远程库</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git remote add [shortname] [url] # shortname是本地给url的别名</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git remote add [shortname] [url] # shortname是本地给url的别名<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="pull"><a href="#pull" class="headerlink" title="pull"></a>pull</h3><p><code>git pull</code> 命令用于从远程获取代码并合并本地的版本。</p>
 <p><code>git pull</code> 其实就是 git fetch 和 git merge FETCH_HEAD 的简写。 命令格式如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git pull &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git pull &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="push"><a href="#push" class="headerlink" title="push"></a>push</h3><p><code>git push</code> 命用于从将本地的分支版本上传到远程并合并。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git push &lt;远程主机名&gt; &lt;本地分支名&gt;:&lt;远程分支名&gt;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git push &lt;远程主机名&gt; &lt;本地分支名&gt;:&lt;远程分支名&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>如果本地分支名与远程分支名相同，则可以省略<code>:&lt;远程分支名&gt;</code></p>
 <p>删除主机的分支可以使用 –delete 参数，以下命令表示删除 origin 主机的 master 分支：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git push origin --delete master</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">git push origin --delete master<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h1 id="MarkdownPad的安装"><a href="#MarkdownPad的安装" class="headerlink" title="MarkdownPad的安装"></a>MarkdownPad的安装</h1><p>参考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1745a7f53404">MarkdownPad 2在win10上安装及破解（含安装包）
 </a><br>感觉用vs code还是好一些（但是电脑上没装。。。太懒了）</p>
 <h1 id="Markdown的基本语法"><a href="#Markdown的基本语法" class="headerlink" title="Markdown的基本语法"></a>Markdown的基本语法</h1><h2 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h2><p>使用 # 号可表示 1-6 级标题，一级标题对应一个 # 号，二级标题对应两个 # 号，以此类推。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 一级标题</span><br><span class="line">## 二级标题</span><br><span class="line">### 三级标题</span><br><span class="line">#### 四级标题</span><br><span class="line">##### 五级标题</span><br><span class="line">###### 六级标题</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none"># 一级标题
+## 二级标题
+### 三级标题
+#### 四级标题
+##### 五级标题
+###### 六级标题<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h2><p>Markdown 可以使用以下几种字体：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*斜体文本*</span><br><span class="line">_斜体文本_</span><br><span class="line">**粗体文本**</span><br><span class="line">__粗体文本__</span><br><span class="line">***粗斜体文本***</span><br><span class="line">___粗斜体文本___</span><br></pre></td></tr></table></figure>
-<h2 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">***</span><br><span class="line"></span><br><span class="line">* * *</span><br><span class="line"></span><br><span class="line">*****</span><br><span class="line"></span><br><span class="line">- - -</span><br><span class="line"></span><br><span class="line">----------</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">*斜体文本*
+_斜体文本_
+**粗体文本**
+__粗体文本__
+***粗斜体文本***
+___粗斜体文本___<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h2><pre class="line-numbers language-none"><code class="language-none">***
+
+* * *
+
+*****
+
+- - -
+
+----------<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="删除线"><a href="#删除线" class="headerlink" title="删除线"></a>删除线</h2><p>如果段落上的文字要添加删除线，只需要在文字的两端加上两个波浪线 ~~ 即可</p>
 <p>或者加<code>&lt;s&gt;&lt;/s&gt;</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">~~BAIDU.COM~~</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">~~BAIDU.COM~~<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><del>BAIDU.COM</del></p>
 <h2 id="下划线"><a href="#下划线" class="headerlink" title="下划线"></a>下划线</h2><p><u>下划线可以通过 HTML 的<code> &lt;u&gt;</code> 标签来实现</u></p>
 <h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><p>无序列表使用星号(*)、加号(+)或是减号(-)作为列表标记，这些标记后面要添加一个空格，然后再填写内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* 第一项</span><br><span class="line">* 第二项</span><br><span class="line">* 第三项</span><br><span class="line"></span><br><span class="line">+ 第一项</span><br><span class="line">+ 第二项</span><br><span class="line">+ 第三项</span><br><span class="line"></span><br><span class="line">- 第一项</span><br><span class="line">- 第二项</span><br><span class="line">- 第三项</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">* 第一项
+* 第二项
+* 第三项
+
++ 第一项
++ 第二项
++ 第三项
+
+- 第一项
+- 第二项
+- 第三项<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>有序列表使用数字并加上 . 号和空格来表示，如：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. 第一项</span><br><span class="line">2. 第二项</span><br><span class="line">3. 第三项</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">1. 第一项
+2. 第二项
+3. 第三项<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h2 id="列表嵌套"><a href="#列表嵌套" class="headerlink" title="列表嵌套"></a>列表嵌套</h2><p>列表嵌套只需在子列表中的选项前面添加四个空格即可：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. 第一项：</span><br><span class="line">    - 第一项嵌套的第一个元素</span><br><span class="line">    - 第一项嵌套的第二个元素</span><br><span class="line">2. 第二项：</span><br><span class="line">    - 第二项嵌套的第一个元素</span><br><span class="line">    - 第二项嵌套的第二个元素</span><br><span class="line">````</span><br><span class="line">## 区块</span><br><span class="line">直接上示例</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">1. 第一项：
+    - 第一项嵌套的第一个元素
+    - 第一项嵌套的第二个元素
+2. 第二项：
+    - 第二项嵌套的第一个元素
+    - 第二项嵌套的第二个元素
+&#96;&#96;&#96;&#96;
+## 区块
+直接上示例<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
 <p>区块中使用列表</p>
 <ol>
@@ -113,7 +155,13 @@ document.addEventListener("pjax:success", initScrollReveal);
 <li>第三项</li>
 </ul>
 </blockquote>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; 区块中使用列表</span><br><span class="line">&gt; 1. 第一项</span><br><span class="line">&gt; 2. 第二项</span><br><span class="line">&gt; + 第一项</span><br><span class="line">&gt; + 第二项</span><br><span class="line">&gt; + 第三项</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">&gt; 区块中使用列表
+&gt; 1. 第一项
+&gt; 2. 第二项
+&gt; + 第一项
+&gt; + 第二项
+&gt; + 第三项
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
 <p>最外层</p>
 <blockquote>
@@ -123,9 +171,17 @@ document.addEventListener("pjax:success", initScrollReveal);
 </blockquote>
 </blockquote>
 </blockquote>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; 最外层</span><br><span class="line">&gt; &gt; 第一层嵌套</span><br><span class="line">&gt; &gt; &gt; 第二层嵌套</span><br><span class="line"></span><br><span class="line">## 代码</span><br><span class="line">如果是段落上的一个函数或片段的代码可以用反引号把它包起来（`），例如：</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">&gt; 最外层
+&gt; &gt; 第一层嵌套
+&gt; &gt; &gt; 第二层嵌套
+
+## 代码
+如果是段落上的一个函数或片段的代码可以用反引号把它包起来（&#96;），例如：<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>printf()</code> 函数</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">`printf()` 函数</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">代码区块使用 4 个空格或者一个制表符（Tab 键）。</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">&#96;printf()&#96; 函数
+
+
+代码区块使用 4 个空格或者一个制表符（Tab 键）。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <pre><code>include&lt;iostream&gt;
 using namespace std;
 </code></pre>
