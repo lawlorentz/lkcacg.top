@@ -5,4 +5,4 @@ then info="AI日记进行中"
 fi
 git add -A
 git commit -m "$info"
-git push origin hexo
+git push lkc hexo
