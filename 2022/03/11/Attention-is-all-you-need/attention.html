@@ -1,0 +1,77 @@
+<html><head><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/vditor@3.6.0/dist/index.css"/>
+<script src="https://cdn.jsdelivr.net/npm/vditor@3.6.0/dist/method.min.js"></script></head>
+<body><div class="vditor-reset" id="preview"><h1 id="Attention-is-all-you-need-学习笔记">Attention is all you need 学习笔记</h1>
+<p>参考文献：<br />
+<a href="https://blog.csdn.net/qq_28385535/article/details/89081387">Attention Is All You Need翻译</a><br />
+<a href="https://luweikxy.gitbook.io/machine-learning-notes/self-attention-and-transformer">Self-Attention机制和Transformer</a><br />
+<a href="https://blog.csdn.net/nocml/article/details/103082600">Transformer--论文翻译：Attention Is All You Need 中文版</a><br />
+<a href="http://jalammar.github.io/illustrated-transformer/">The Illustrated Transformer</a></p>
+<h2 id="Abstract">Abstract</h2>
+<p>The dominant sequence transduction models are based on complex recurrent or convolutional neural networks that include an <em>encoder and a decoder</em>. The best performing models also connect the encoder and decoder through an <em>attention<br />
+mechanism</em>. We propose a new simple network architecture, the <em><strong>Transformer</strong></em>,<br />
+based solely on attention mechanisms, dispensing with（摒弃） recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train. Our model achieves 28.4 BLEU on the WMT 2014 Englishto- German translation task, improving over the existing best results, including ensembles, by over 2 BLEU. On the WMT 2014 English-to-French translation task, our model establishes a new single-model state-of-the-art（best） BLEU score of 41.8 after training for 3.5 days on eight GPUs, a small fraction of the training costs of the best models from the literature. We show that the Transformer generalizes well to other tasks by applying it successfully to English <em>constituency parsing</em>（句法分析） both with large and limited training data.<br />
+<img src="https://img-blog.csdnimg.cn/20201110182639321.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjcyMTQxMg==,size_16,color_FFFFFF,t_70#pic_center" alt="constituency parsing" /></p>
+<h3 id="BLEU">BLEU</h3>
+<p><a href="https://dl.acm.org/doi/10.3115/1073083.1073135">BLEU: a method for automatic evaluation of machine translation</a></p>
+<p>BLEU值其实也就是“改进版的n-gram”加上“过短惩罚因子”。</p>
+<div class="vditor-math">BLEU=BP\cdot exp(\sum_{n=1}^N w_n logP_n)</div>
+<p>其中，</p>
+<div class="vditor-math">BP=
+\begin{cases}
+1 &amp; \text{if $c&gt;r$}\\
+e^{1-\frac{r}{c}} &amp; \text{if $c\le r$}
+\end{cases}</div>
+<div class="vditor-math">w_n=\frac{1}{N}  \quad
+ \text{(Uniform Weights)}</div>
+<p><span class="vditor-math">c</span>是机器翻译出的句子(<em>candidate</em>)的长度<br />
+<span class="vditor-math">r</span>是标准答案(<em>reference</em>)的长度</p>
+<p><span class="vditor-math">BP (Brevity Penalty)</span>是过短惩罚因子</p>
+<h4 id="N-gram">N-gram</h4>
+<p><em>n-gram</em>即“连续的n个词组成的短语”</p>
+<p><span class="vditor-math">P_n</span>的分母为<span class="vditor-math">reference</span>中所有<em>n-gram</em>的数量，分子为<span class="vditor-math">candidate</span>中出现在<span class="vditor-math">referrence</span>中的<em>n-gram</em>数</p>
+<blockquote>
+<p>例子：<br />
+candidate: the cat sat on the mat<br />
+reference: the cat is on the mat</p>
+</blockquote>
+<p><em>candidate</em>中的<em>2-gram</em>：{the cat，cat sat，sat on，on the，the mat}<br />
+<em>reference</em>中的<em>2-gram</em>：{the cat，cat is，is on，on the，the mat}<br />
+发现有3个<em>2-gram</em>在reference中,所以<span class="vditor-math">P_n=\frac{3}{5}=0.6</span></p>
+<h2 id="1-Introduction">1 Introduction</h2>
+<p>Recurrent neural networks, long short term memory and gated recurrent neural networks in particular, have been firmly established as state of the art approaches in sequence modeling and transduction problems such as language modeling and machine translation. Numerous efforts have since continued to push the boundaries of recurrent language models and encoder-decoder architectures.</p>
+<p>Recurrent models typically factor computation along the symbol positions of the input and output sequences. Aligning the positions to steps in computation time, they generate a sequence of hidden states <span class="vditor-math">h_t</span>, as a function of the previous hidden state <span class="vditor-math">h_{t-1}</span> and the input for position <span class="vditor-math">t</span>. This inherently(固有的) sequential nature precludes(排除) parallelization within training examples, which becomes critical at longer sequence lengths, as memory constraints(内存限制) limit batching across examples. Recent work has achieved significant improvements in computational efficiency through factorization(因式分解) tricks and conditional computation , while also improving model performance in case of the latter. The fundamental constraint of sequential computation, however, remains.</p>
+<p>Attention mechanisms have become an integral(必需的) part of compelling sequence modeling and transduction models in various tasks, <em>allowing modeling of dependencies without regard to their distance in the input or output sequences</em>. In all but a few cases , however, such attention mechanisms are used in conjunction(配合) with a recurrent network.</p>
+<p>In this work we propose the Transformer, a model architecture eschewing(回避) recurrence and instead relying entirely on an attention mechanism to draw global dependencies between input and output. The Transformer allows for significantly more parallelization and can reach a new state of the art in translation quality after being trained for as little as twelve hours on eight P100 GPUs.</p>
+<h2 id="2-Background">2 Background</h2>
+<p>The goal of reducing sequential computation also forms the foundation of the Extended Neural GPU, ByteNet and ConvS2S , all of which use convolutional neural networks as basic building block, computing hidden representations in parallel for all input and output positions. In these models, the number of operations required to relate signals from two arbitrary input or output positions grows in the distance between positions, linearly for ConvS2S and logarithmically for ByteNet. <em>This makes it more difficult to learn dependencies between distant positions</em>. In the Transformer this is reduced to a constant number of operations, albeit(尽管) at the cost of reduced effective resolution dueto averaging attention-weighted positions, an effect we counteract with Multi-Head Attention as described in section 3.2.</p>
+<p>Self-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequence. Self-attention has been used successfully in a variety of tasks including reading comprehension, abstractive summarization(摘要概括), textual entailment(文本蕴涵) and learning task-independent sentence representations .</p>
+<p>End-to-end memory networks are based on a recurrent attention mechanism instead of sequence-aligned recurrence and have been shown to perform well on simple-language question answering and language modeling tasks .</p>
+<p>To the best of our knowledge, however, the Transformer is the first transduction model relying entirely on self-attention to compute representations of its input and output without using sequence-aligned RNNs or convolution. In the following sections, we will describe the Transformer, motivate self-attention and discuss its advantages over models such as [17, 18] and [9].</p>
+<h2 id="3-Model-Architecture">3 Model Architecture</h2>
+<p>Most competitive neural sequence transduction models have an encoder-decoder structure. Here,  the encoder maps an input sequence of symbol representations <span class="vditor-math">(x_1, ..., x_n)</span> to a sequence   of continuous representations <span class="vditor-math">z = (z_1, ..., z_n)</span>. Given <span class="vditor-math">z</span>, the decoder then generates an output sequence <span class="vditor-math">y = (y_1, ..., y_m)</span> of symbols <em>one element at a time</em>. At each step the model is <em>auto-regressive, consuming the previously generated symbols as additional input when generating the next</em>.</p>
+<p>The Transformer follows this overall architecture using stacked self-attention and <em>point-wise, fully connected layers</em>(各数据独立的全连接层) for both the encoder and decoder, shown in the left and right halves of Figure 1, respectively.</p>
+<p><img src="https://4143056590-files.gitbook.io/~/files/v0/b/gitbook-28427.appspot.com/o/assets%2F-LpO5sn2FY1C9esHFJmo%2F-M1uVIrSPBnanwyeV0ps%2F-M1uVKsAyK8cPrMaMvjC%2Ftransformer-model-architecture.jpg?generation=1583677021368523&amp;alt=media" alt="Figure 1" /></p>
+<h3 id="Encoder-and-Decoder-Stacks">Encoder and Decoder Stacks</h3>
+<p><img src="https://zh.d2l.ai/_images/encoder-decoder.svg" alt="" /><br />
+<strong>Encoder</strong>: The encoder is composed of a stack of <span class="vditor-math">N = 6</span> identical(相同的) layers. Each layer has two sub-layers. The first is a multi-head self-attention mechanism, and the second is a simple, position-wise fully connected feed-forward network. We employ a <em>residual connection</em> around each of the two sub-layers, followed by <em>layer normalization</em> . That is, the output of each sub-layer is <span class="vditor-math">LayerNorm(x +
+Sublayer(x))</span>, where <span class="vditor-math">Sublayer(x)</span> is the function implemented by the sub-layer itself. To facilitate(促进) these residual connections, all sub-layers in the model, as well as the embedding layers, produce outputs of dimension <span class="vditor-math">d_{model} = 512</span>.</p>
+<p><strong>Decoder</strong>: The decoder is also composed of a stack of <span class="vditor-math">N = 6</span>identical layers. In addition to the two sub-layers in each encoder layer, the decoder inserts a third sublayer, which performs multi-head attention over the output of the encoder stack. Similar to the encoder, we employ residual connections around each of the sublayers, followed by layer normalization. <em>We also modify the self-attention sublayer in the decoder stack to prevent positions from attending to subsequent<br />
+positions</em>. This masking, combined with fact that the output embeddings are offset by one position, ensures that the predictions for position <span class="vditor-math">i</span>can depend only on the known outputs at positions less than <span class="vditor-math">i</span>.</p>
+</div>
+<script>
+    const previewElement = document.getElementById('preview')
+    Vditor.setContentTheme('light', 'https://cdn.jsdelivr.net/npm/vditor@3.6.0/dist/css/content-theme');
+    Vditor.codeRender(previewElement, 'zh_CN');
+    Vditor.highlightRender({"enable":true,"lineNumber":false,"style":"github"}, previewElement, 'https://cdn.jsdelivr.net/npm/vditor@3.6.0');
+    Vditor.mathRender(previewElement, {
+        cdn: 'https://cdn.jsdelivr.net/npm/vditor@3.6.0',
+        math: {"engine":"KaTeX","inlineDigit":false,"macros":{}},
+    });
+    Vditor.mermaidRender(previewElement, 'https://cdn.jsdelivr.net/npm/vditor@3.6.0');
+    Vditor.flowchartRender(previewElement, 'https://cdn.jsdelivr.net/npm/vditor@3.6.0');
+    Vditor.graphvizRender(previewElement, 'https://cdn.jsdelivr.net/npm/vditor@3.6.0');
+    Vditor.chartRender(previewElement, 'https://cdn.jsdelivr.net/npm/vditor@3.6.0');
+    Vditor.mindmapRender(previewElement, 'https://cdn.jsdelivr.net/npm/vditor@3.6.0');
+    Vditor.abcRender(previewElement, 'https://cdn.jsdelivr.net/npm/vditor@3.6.0');
+    Vditor.mediaRender(previewElement);
+</script></body></html>
